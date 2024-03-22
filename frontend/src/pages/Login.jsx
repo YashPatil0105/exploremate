@@ -128,6 +128,11 @@
 // };
 
 // export default Login;
+// *******************
+
+//************ 
+//********** 
+//********** 
 import axios from "axios";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -149,7 +154,7 @@ const Login = () => {
       const res = await axios.post("http://localhost:5000/login", user);
       if (res.status === 200 && res.data) {
         localStorage.setItem("user", JSON.stringify(res.data));
-        navigate("/SearchVerse");
+        navigate("/");
         toast.success("Logged in successfully");
       } else {
         toast.error("User does not exist");
