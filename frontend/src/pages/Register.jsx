@@ -244,11 +244,13 @@ const Register = () => {
           navigate("/login", { replace: true });
         }, 1500);
       } else if (res.status === 400) {
+        console.log("daskjb")
         toast.error("Something went wrong");
       } else {
         toast.error("User already exists");
       }
     } catch (err) {
+      console.log(err);
       toast.error("Something went wrong, error!");
     }
   };
