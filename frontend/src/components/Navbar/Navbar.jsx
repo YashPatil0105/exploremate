@@ -169,10 +169,9 @@
 // };
 
 // export default Navbar;
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../../assets/logo.png";
-import { NavLink, Link, json } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { FaCaretDown } from "react-icons/fa";
 import ResponsiveMenu from "./ResponsiveMenu";
 import { HiMenuAlt3, HiMenuAlt1 } from "react-icons/hi";
@@ -198,8 +197,8 @@ export const NavbarLinks = [
 
 const DropdownLinks = [
   {
-    name: "Our Services",
-    link: "/#services",
+    name: "Travel Advisor",
+    link: "/advisor",
   },
   {
     name: "Flight Booking",
@@ -225,9 +224,12 @@ const DropdownLinks = [
 
 const Navbar = ({ handleOrderPopup }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setIsLoggedIn(!!user);
+  }, []);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -235,22 +237,21 @@ const Navbar = ({ handleOrderPopup }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    setIsLoggedIn(false); // Update isLoggedIn state to false upon logout
+    setIsLoggedIn(false);
+    // Redirect to home page after logout
+    window.location.href = "/";
   };
 
   return (
     <>
-      <nav className="fixed top-0 right-0 w-full z-50 bg-white backdrop-blur-sm text-black shadow-md">
-        {/* Navigation */}
+      <nav className="fixed top-0 right-0 w-full z-50 bg-[#14347e] backdrop-blur-sm text-white text-lg font-semibold shadow-md">
         <div className="container py-3 sm:py-0">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4  font-bold text-2xl">
+            <div className="flex items-center gap-4 font-bold text-2xl">
               <Link to={"/"} onClick={() => window.scrollTo(0, 0)}>
                 <img src={Logo} alt="" className="h-16" />
               </Link>
-              {/* <span>TCJ Tourism</span> */}
             </div>
-            {/* Main Menu */}
             <div className="hidden md:block">
               <ul className="flex items-center gap-6 ">
                 {NavbarLinks.map((link) => (
@@ -280,10 +281,9 @@ const Navbar = ({ handleOrderPopup }) => {
                   </div>
                 </li>
                 <li className="py-4">
-                  {isLoggedIn ? ( // Render "Logout" if user is logged in
+                  {isLoggedIn ? (
                     <button onClick={handleLogout}>Logout</button>
                   ) : (
-                    // Render "Login/Signup" if user is not logged in
                     <NavLink to="/login" activeClassName="active">
                       Login/Signup
                     </NavLink>
@@ -291,7 +291,6 @@ const Navbar = ({ handleOrderPopup }) => {
                 </li>
               </ul>
             </div>
-            {/* Right Side Buttons */}
             <div className="flex items-center gap-4">
               <button
                 className="bg-gradient-to-r from-primary to-secondary hover:bg-bg-gradient-to-r hover:from-secondary hover:bg-primary transition-all duration-600 text-white px-3 py-1 rounded-full"
@@ -299,7 +298,6 @@ const Navbar = ({ handleOrderPopup }) => {
               >
                 Book Now
               </button>
-              {/* Mobile Hamburger icon */}
               <div className="md:hidden block">
                 {showMenu ? (
                   <HiMenuAlt1 onClick={toggleMenu} className="cursor-pointer transition-all" size={30} />

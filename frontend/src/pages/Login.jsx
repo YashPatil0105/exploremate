@@ -137,6 +137,7 @@ import axios from "axios";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -154,8 +155,10 @@ const Login = () => {
       const res = await axios.post("http://localhost:5000/login", user);
       if (res.status === 200 && res.data) {
         localStorage.setItem("user", JSON.stringify(res.data));
-        navigate("/");
         toast.success("Logged in successfully");
+        // <Navigate to="/" />
+        // window.location.reload(false);
+         navigate("/");
       } else {
         toast.error("User does not exist");
       }

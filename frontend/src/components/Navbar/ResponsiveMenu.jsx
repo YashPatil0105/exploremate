@@ -36,9 +36,9 @@ const ResponsiveMenu = ({ showMenu, setShowMenu }) => {
         </nav>
       </div>
       <div className="footer">
-        <h1>
+        {/* <h1>
           Made with ❤ by <a href="https://dilshad-ahmed.github.io/">Dilshad</a>{" "}
-        </h1>
+        </h1> */}
       </div>
     </div>
   );

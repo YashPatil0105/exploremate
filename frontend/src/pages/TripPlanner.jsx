@@ -1,101 +1,153 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid"; // Import UUID for generating unique IDs
 
 const TripPlanner = () => {
-  const { tripId } = useParams();
-  const [tripData, setTripData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [editable, setEditable] = useState(false);
-  const [permissions, setPermissions] = useState({});
+  // Simulated array of trips
+  const [trips, setTrips] = useState([]);
 
-  useEffect(() => {
-    const fetchTripData = async () => {
-      try {
-        const res = await axios.get(`API_ENDPOINT/trips/${tripId}`);
-        setTripData(res.data.trip);
-        setPermissions(res.data.permissions);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching trip data:", error);
-        setLoading(false);
-      }
-    };
+  // State for new trip inputs
+  const [newTrip, setNewTrip] = useState({
+    id: uuidv4(), // Generate unique ID for new trip
+    title: "",
+    description: "",
+    dateTime: "",
+  });
 
-    fetchTripData();
-  }, [tripId]);
+  // State to track the ID of the trip being edited
+  const [editingTripId, setEditingTripId] = useState(null);
 
-  const handleEditPermission = () => {
-    // Logic to toggle edit permission
-    setEditable(!editable);
+  // Handle input change for new trip
+  const handleNewTripChange = (e) => {
+    const { name, value } = e.target;
+    setNewTrip({
+      ...newTrip,
+      [name]: value,
+    });
   };
 
-  const handleSaveChanges = async () => {
-    try {
-      // Logic to save changes to trip data
-      await axios.put(`API_ENDPOINT/trips/${tripId}`, tripData);
-      // Show success alert
-      alert("Changes saved successfully!");
-    } catch (error) {
-      console.error("Error saving changes:", error);
-      // Show error alert
-      alert("Error saving changes. Please try again later.");
+  // Handle adding a new trip
+  const handleAddTrip = () => {
+    if (!newTrip.title || !newTrip.description || !newTrip.dateTime) {
+      alert("Please fill out all fields before adding a trip.");
+      return;
     }
+    setTrips([...trips, newTrip]);
+    // Clear input fields after adding trip
+    setNewTrip({
+      id: uuidv4(),
+      title: "",
+      description: "",
+      dateTime: "",
+    });
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // Handle removing a trip
+  const handleRemoveTrip = (id) => {
+    setTrips(trips.filter((trip) => trip.id !== id));
+  };
 
-  if (!tripData) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Error: Trip data not found</p>
-      </div>
+  // Handle editing a trip
+  const handleEditTrip = (id) => {
+    setEditingTripId(id);
+    // Find the trip with the provided ID and set its details in the input fields
+    const tripToEdit = trips.find((trip) => trip.id === id);
+    setNewTrip(tripToEdit);
+  };
+
+  // Handle saving edited trip
+  const handleSaveEditedTrip = () => {
+    const updatedTrips = trips.map((trip) =>
+      trip.id === newTrip.id ? newTrip : trip
     );
-  }
-  
-    
-  
+    setTrips(updatedTrips);
+    setEditingTripId(null); // Reset editing trip ID
+    // Clear input fields after saving edited trip
+    setNewTrip({
+      id: uuidv4(),
+      title: "",
+      description: "",
+      dateTime: "",
+    });
+  };
 
   return (
-    
-    <div className="container mx-auto  mt-20 py-8">
-      <div>
-        <h1 className="text-3xl font-bold mb-4">Trip Planner</h1>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">{tripData.title || 'Untitled Trip'}</h2> {/* Added fallback value */}
-          {permissions.canEdit && (
+    <div className="container mx-auto mt-20 py-8">
+      {/* Trip Maker Platform */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-4">Trip Maker</h1>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            type="text"
+            name="title"
+            placeholder="Enter trip title"
+            value={newTrip.title}
+            onChange={handleNewTripChange}
+            className="border rounded p-2"
+          />
+          <textarea
+            name="description"
+            placeholder="Enter trip description"
+            value={newTrip.description}
+            onChange={handleNewTripChange}
+            className="border rounded p-2"
+          ></textarea>
+          <input
+            type="datetime-local"
+            name="dateTime"
+            value={newTrip.dateTime}
+            onChange={handleNewTripChange}
+            className="border rounded p-2"
+          />
+          {editingTripId ? (
             <button
-              onClick={handleEditPermission}
+              onClick={handleSaveEditedTrip}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
-              {editable ? "Cancel Editing" : "Edit"}
+              Save Edited Trip
             </button>
-          )}
-          {editable && (
+          ) : (
             <button
-              onClick={handleSaveChanges}
+              onClick={handleAddTrip}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
-              Save Changes
+              Add Trip
             </button>
           )}
         </div>
-        <div className="bg-gray-100 p-4 rounded">
-          {/* Render trip data here */}
-          {editable ? (
-            <textarea
-              value={tripData.description}
-              onChange={(e) =>
-                setTripData({ ...tripData, description: e.target.value })
-              }
-              className="w-full h-40 border rounded p-2"
-            ></textarea>
-          ) : (
-            <p>{tripData.description}</p>
-          )}
-        </div>
+      </div>
+
+      {/* Trip Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {trips.map((trip) => (
+          <div
+            key={trip.id}
+            className="relative bg-gray-100 p-4 rounded group"
+          >
+            <h2 className="text-xl font-semibold mb-2">{trip.title}</h2>
+            <p className="mb-4">{trip.description}</p>
+            <p>{trip.dateTime}</p>
+            <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button
+                onClick={() => handleRemoveTrip(trip.id)}
+                className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Remove
+              </button>
+              <button
+                onClick={() => handleEditTrip(trip.id)}
+                className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => alert(`Share trip with ID: ${trip.id}`)}
+                className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Share
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

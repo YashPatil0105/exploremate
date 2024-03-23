@@ -5,7 +5,7 @@ url = "https://travel-advisor.p.rapidapi.com/locations/v2/auto-complete"
 # querystring = {"query":location,"budget":budget,"lang":"en_US","units":"km"}
 
 headers = {
-	"X-RapidAPI-Key": "78a3e92f15mshb5d1f8c3e98c746p1bb43ajsn4b799227eda7",
+	"X-RapidAPI-Key": "*",
 	"X-RapidAPI-Host": "travel-advisor.p.rapidapi.com"
 }
 
