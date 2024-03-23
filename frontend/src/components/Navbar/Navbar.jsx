@@ -212,14 +212,6 @@ const DropdownLinks = [
     name: "Trip Planning",
     link: "/tripplanner",
   },
-  {
-    name: "Top Brands",
-    link: "/#mobile_brands",
-  },
-  {
-    name: "Location",
-    link: "/#location",
-  },
 ];
 
 const Navbar = ({ handleOrderPopup }) => {

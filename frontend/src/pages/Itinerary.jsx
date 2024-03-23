@@ -156,20 +156,20 @@ const Itinerary = () => {
       <h1 className="text-3xl font-bold mb-4 text-center">Your Itinerary</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {itinerary.map((item) => (
-          <div key={item.id} className="border rounded p-4 bg-gray-100">
+          <div key={item.id} className="cards border rounded bg-gray-300 shadow-x  p-4 ">
             <h2 className="text-xl font-semibold mb-2">{item.day}</h2>
             <p className="text-gray-600">Activity: {item.activity}</p>
             <p className="text-gray-600">Time: {item.time}</p>
             <div className="flex justify-end mt-2">
               <button
                 onClick={() => handleRemoveItem(item.id)}
-                className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded mr-2"
+                className="bg-[#dc6a60] hover:bg-red-600 text-white py-1 px-2 rounded mr-2"
               >
                 Remove
               </button>
               <button
                 onClick={() => handleUpdateItem(item.id)}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
+                className="bg-[#3d91bb] hover:bg-cyan-700 text-white py-1 px-2 rounded"
               >
                 Update
               </button>
