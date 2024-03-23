@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from api_key import my_api_key
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app) 
 
 def get_flight_details(api_key, from_city, to_city, outbound_date, return_date=None, currency="USD"):
     api_url = "https://serpapi.com/search"
