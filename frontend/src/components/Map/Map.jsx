@@ -15,7 +15,7 @@ import useStyles from './styles.js';
 
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(true);
 
   useEffect(() => {
     const getLocation = () => {
