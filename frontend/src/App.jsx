@@ -82,6 +82,7 @@ import TripPlanner from "./pages/TripPlanner";
 import TravelAdvisor from "./pages/TravelAdvisorPage";
 import Header from './components/Header/Header';
 import TravelAdvisorPage from './pages/TravelAdvisorPage'; // Import the new page
+import FlightListPage from './pages/FlightListPage';
 
 const App = () => {
   React.useEffect(() => {
@@ -106,6 +107,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/flight" element={<FlightComparison />} />
             <Route path="/itinerary" element={<Itinerary />} />
+            <Route path="/flights" element={<FlightListPage />} />
             <Route path="/tripplanner" element={<TripPlanner />} />
             <Route path="/advisor" element={<TravelAdvisor />} />
             <Route path="blogs/:id" element={<BlogsDetails />} />
