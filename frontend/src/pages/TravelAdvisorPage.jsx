@@ -3,7 +3,7 @@ import TravelAdvisorApp from '../TravelAdvisorApp';
 
 function TravelAdvisorPage() {
   return (
-    <div>
+    <div className='bg-gray-200'>
       <TravelAdvisorApp/>
     </div>
   )
