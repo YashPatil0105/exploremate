@@ -1,1 +1,1 @@
-my_api_key = "*"
+my_api_key = "e3d37e3bd4ec4e2862b7f5e39b86c1a54ccc3b31852e49290ccc3640ff624a9e"
