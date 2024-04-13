@@ -36,7 +36,7 @@ function Map2() {
   });
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: '*',
+    googleMapsApiKey: 'AIzaSyAZLjoc-ZIzUBjTCJgLLLa8jPTNOV_02nk',
   });
   let center = { lat: 0, lng: 0 };
 

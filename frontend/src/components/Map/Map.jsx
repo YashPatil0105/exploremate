@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import GoogleMapReact from 'google-map-react';
 import { Paper, Typography, useMediaQuery } from '@material-ui/core';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
@@ -8,14 +8,65 @@ import mapStyles from '../../mapStyles.js';
 import useStyles from './styles.js';
 
 
+
+
+
  const Map = ({ coords, places, setCoords, setBounds, setChildClicked, weatherData }) => {
+
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+          },
+          (error) => {
+            console.error("Error getting user location:", error);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+
+    getLocation();
+  }, []);
+
+
   const matches = useMediaQuery('(min-width:600px)');
   const classes = useStyles();
+
+  console.log(10);
 
   return (
     <div className={classes.mapContainer}>
       
-      <GoogleMapReact
+      <>
+      {latitude && longitude}
+      <section data-aos="fade-up" className="">
+        <div className="container mt-28 -mx-16">
+
+          <div className="rounded-xl">
+            <iframe
+              src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d9948.014721545012!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1713007978922!5m2!1sen!2sin`}
+              width="115%"
+              height="700"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              style={{ borderRadius: "20px", boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.38)" }}
+            ></iframe>
+          </div>
+        </div>
+      </section>
+    </>
+
+    {showMap && (      <GoogleMapReact
         // bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
         bootstrapURLKeys={'AIzaSyAZLjoc-ZIzUBjTCJgLLLa8jPTNOV_02nk'}
         defaultCenter={coords}
@@ -29,7 +80,7 @@ import useStyles from './styles.js';
         }}
         onChildClick={(child) => setChildClicked(child)}
       >
-        {places.length && places.map((place, i) => (
+        {/* {places.length && places.map((place, i) => (
           <div
             className={classes.markerContainer}
             // eslint-disable-next-line react/no-unknown-property
@@ -51,15 +102,19 @@ import useStyles from './styles.js';
                 </Paper>
               )}
           </div>
-        ))}
-        {weatherData?.list?.length && weatherData.list.map((data, i) => (
+        ))} */}
+        {/* {weatherData?.list?.length && weatherData.list.map((data, i) => (
           // eslint-disable-next-line react/no-unknown-property
           <div key={i} lat={data.coord.lat} lng={data.coord.lon}>
             <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`} height="70px" />
           </div>
-        ))}
-      </GoogleMapReact>
+        ))} */}
+
+      
+      </GoogleMapReact>)}
+
     </div>
+    
   );
 };
 
