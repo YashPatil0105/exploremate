@@ -123,9 +123,14 @@ const Itinerary = () => {
     }
   };
 
+ 
   const handleRemoveItem = (id) => {
-    setItinerary(itinerary.filter((item) => item.id !== id));
+    const isConfirmed = window.confirm("Are you sure you want to remove this item?");
+    if (isConfirmed) {
+      setItinerary(itinerary.filter((item) => item.id !== id));
+    }
   };
+  
 
   const handleUpdateItem = (id) => {
     const itemToUpdate = itinerary.find((item) => item.id === id);

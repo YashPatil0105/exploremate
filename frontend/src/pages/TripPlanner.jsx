@@ -43,8 +43,12 @@ const TripPlanner = () => {
 
   // Handle removing a trip
   const handleRemoveTrip = (id) => {
-    setTrips(trips.filter((trip) => trip.id !== id));
+    const isConfirmed = window.confirm("Are you sure you want to remove this item?");
+    if (isConfirmed) {
+      setTrips(trips.filter((trip) => trip.id !== id));
   };
+    }
+    
 
   // Handle editing a trip
   const handleEditTrip = (id) => {
