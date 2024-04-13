@@ -49,17 +49,17 @@ import useStyles from './styles.js';
       <>
       {latitude && longitude}
       <section data-aos="fade-up" className="">
-        <div className="container mt-28 -mx-16">
+        <div className="container mt-28 ">
 
           <div className="rounded-xl">
             <iframe
               src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d9948.014721545012!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1713007978922!5m2!1sen!2sin`}
-              width="115%"
+              width="100%"
               height="700"
               allowfullscreen=""
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-              style={{ borderRadius: "20px", boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.38)" }}
+              style={{ borderRadius: "20px" }}
             ></iframe>
           </div>
         </div>
