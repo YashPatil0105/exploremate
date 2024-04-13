@@ -241,7 +241,7 @@ const Navbar = ({ handleOrderPopup }) => {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4 font-bold text-2xl">
               <Link to={"/"} onClick={() => window.scrollTo(0, 0)}>
-                <img src={Logo} alt="" className="h-16" />
+                <img src={Logo} alt="" className="h-12" />
               </Link>
             </div>
             <div className="hidden md:block">
@@ -273,22 +273,22 @@ const Navbar = ({ handleOrderPopup }) => {
                   </div>
                 </li>
                 <li className="py-4">
-                  {isLoggedIn ? (
-                    <button onClick={handleLogout}>Logout</button>
-                  ) : (
-                    <NavLink to="/login" activeClassName="active">
-                      Login/Signup
-                    </NavLink>
-                  )}
+                  
                 </li>
               </ul>
             </div>
             <div className="flex items-center gap-4">
               <button
                 className="bg-gradient-to-r from-primary to-secondary hover:bg-bg-gradient-to-r hover:from-secondary hover:bg-primary transition-all duration-600 text-white px-3 py-1 rounded-full"
-                onClick={handleOrderPopup}
+                
               >
-                Book Now
+                {isLoggedIn ? (
+                    <button onClick={handleLogout}>Logout</button>
+                  ) : (
+                    <NavLink to="/login" activeClassName="active">
+                      Login/Signup
+                    </NavLink>
+                  )}
               </button>
               <div className="md:hidden block">
                 {showMenu ? (

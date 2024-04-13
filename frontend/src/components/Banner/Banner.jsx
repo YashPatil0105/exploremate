@@ -25,15 +25,13 @@ const Banner = () => {
                   data-aos="fade-up"
                   className="text-3xl sm:text-4xl font-bold"
                 >
-                  Explore all corners of The world with us
+                  Explore all corners of The India with us
                 </h1>
                 <p
                   data-aos="fade-up"
                   className="text-sm text-gray-500 tracking-wide leading-8"
                 >
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eaque reiciendis inventore iste ratione ex alias quis magni at
-                  optio ratione ex alias quis magni at optio
+                  Every corner of India has its own mysteries, and lore and relics, just begging to be explored. Look inwards this time and uncover all that is ours to truly believe that India is indeed, Incredible!
                   <br />
                 </p>
                 <div data-aos="zoom-in" className="grid grid-cols-2 gap-6">

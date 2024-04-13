@@ -314,7 +314,7 @@ const Hero = () => {
         <h2 className="text-xl font-semibold mb-4">Flight Details</h2>
         {responseData && responseData.length > 0 ? (
           <>
-            <h2 className="text-xl font-semibold mb-4">Flight Details</h2>
+            
             {responseData.map((flight, index) => (
               <div
                 key={index}
