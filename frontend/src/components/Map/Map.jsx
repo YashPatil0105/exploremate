@@ -15,7 +15,7 @@ import useStyles from './styles.js';
 
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(true);
 
   useEffect(() => {
     const getLocation = () => {
@@ -48,10 +48,10 @@ import useStyles from './styles.js';
       
       <>
       {latitude && longitude}
-      <section data-aos="fade-up" className="">
-        <div className="container mt-28 ">
+      <section data-aos="fade-up" className="absolute z-10 top-0 left-0 w-full h-full bg-gray-200">
+        <div className="container mt-36 ">
 
-          <div className="rounded-xl">
+          <div className="rounded-xl shadow-lg shadow-gray-500 -mx-16">
             <iframe
               src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d9948.014721545012!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1713007978922!5m2!1sen!2sin`}
               width="100%"
@@ -118,73 +118,6 @@ import useStyles from './styles.js';
   );
 };
 
-// export default Map;
-// import mapboxgl from 'mapbox-gl';
-// import React from 'react';
-// import ReactMapGL, { Marker, Popup } from 'react-map-gl';
-// import { Paper, Typography, useMediaQuery } from '@material-ui/core';
-// import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
-// import Rating from '@material-ui/lab/Rating';
 
-// import mapStyles from '../../mapStyles';
-// import useStyles from './styles.js';
-
-// const Map = ({ coords, places, setCoords, setBounds, setChildClicked, weatherData }) => {
-//   const matches = useMediaQuery('(min-width:600px)');
-//   const classes = useStyles();
-
-//   mapboxgl.accessToken = 'pk.eyJ1IjoicmF1bmFrc2luZ2hrYWxzaSIsImEiOiJjbHFwZHZlaHgycDJpMnFvMDU1NG9vb3Z2In0.Cb5RR1VPzsiMKR9cJd4U6A';
-//   return (
-//     <div className={classes.mapContainer}>
-//       <ReactMapGL
-//         {...coords}
-//         width="100%"
-//         height="100%"
-//         mapStyle="mapbox://styles/mapbox/streets-v11"
-//         onViewportChange={(viewport) => {
-//           setCoords({ latitude: viewport.latitude, longitude: viewport.longitude });
-//           setBounds({
-//             ne: [viewport.longitude + viewport.longitudeDelta / 2, viewport.latitude + viewport.latitudeDelta / 2],
-//             sw: [viewport.longitude - viewport.longitudeDelta / 2, viewport.latitude - viewport.latitudeDelta / 2],
-//           });
-//         }}
-//         // mapboxApiAccessToken='pk.eyJ1IjoicmF1bmFrc2luZ2hrYWxzaSIsImEiOiJjbHFwZHZlaHgycDJpMnFvMDU1NG9vb3Z2In0.Cb5RR1VPzsiMKR9cJd4U6A'
-        
-//       >
-//         {places.map((place, i) => (
-//           <Marker
-//             key={i}
-//             latitude={Number(place.latitude)}
-//             longitude={Number(place.longitude)}
-//           >
-//             <div
-//               className={classes.markerContainer}
-//               onClick={() => setChildClicked(i)}
-//             >
-//               {!matches ? (
-//                 <LocationOnOutlinedIcon color="primary" fontSize="large" />
-//               ) : (
-//                 <Paper elevation={3} className={classes.paper}>
-//                   <Typography className={classes.typography} variant="subtitle2" gutterBottom> {place.name}</Typography>
-//                   <img
-//                     className={classes.pointer}
-//                     src={place.photo ? place.photo.images.large.url : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'}
-//                     alt={place.name}
-//                   />
-//                   <Rating name="read-only" size="small" value={Number(place.rating)} readOnly />
-//                 </Paper>
-//               )}
-//             </div>
-//           </Marker>
-//         ))}
-//         {weatherData?.list?.map((data, i) => (
-//           <Marker key={i} latitude={data.coord.lat} longitude={data.coord.lon}>
-//             <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`} height="70px" alt="Weather Icon" />
-//           </Marker>
-//         ))}
-//       </ReactMapGL>
-//     </div>
-//   );
-// };
 
  export default Map;

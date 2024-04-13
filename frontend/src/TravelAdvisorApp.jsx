@@ -67,7 +67,7 @@ const TravelAdvisorApp = () => {
             setRating={setRating}
           />
         </Grid>
-        <Grid item xs={12} md={8} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Grid item xs={12} md={8} style={{ position:'relative' }}>
           <Map
             setChildClicked={setChildClicked}
             setBounds={setBounds}
