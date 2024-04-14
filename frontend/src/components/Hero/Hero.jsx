@@ -187,6 +187,7 @@ const Hero = () => {
     }
     console.log(11);
   };
+  
 
   return (
     <div className="bg-black/20 h-full">
@@ -252,6 +253,7 @@ const Hero = () => {
                 <label htmlFor="departure-date" className="opacity-70">
                   Departure Date
                 </label>
+                
                 <input
                   type="date"
                   name="departure-date"

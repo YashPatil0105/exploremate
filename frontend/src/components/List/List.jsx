@@ -14,7 +14,8 @@ const List = ({ places, type, setType, rating, setRating, childClicked, isLoadin
 
   return (
     <div className="mt-20 mx-3 {classes.container}">
-      <Typography variant="h4">Food & Dining around you</Typography>
+      <Typography variant="h4">{type.charAt(0).toUpperCase() + type.slice(1)} around you.</Typography>
+
       {isLoading ? (
         <div className={classes.loading}>
           <CircularProgress size="5rem" />

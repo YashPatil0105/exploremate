@@ -1,13 +1,13 @@
-// import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 
 // const Itinerary = () => {
 //   const [itinerary, setItinerary] = useState([
-//     { id: 1, day: "Monday", activity: "Explore city", time: "9:00 AM" },
-//     { id: 2, day: "Tuesday", activity: "Visit museum", time: "10:00 AM" },
-//     { id: 3, day: "Wednesday", activity: "Hiking", time: "8:00 AM" },
+//     { id: 1, day: "2024-03-25", activity: "Explore city", time: "09:00" },
+//     { id: 2, day: "2024-03-26", activity: "Visit museum", time: "10:00" },
+//     { id: 3, day: "2024-03-27", activity: "Hiking", time: "08:00" },
 //   ]);
 
-//   const [newItem, setNewItem] = useState({ day: "", activity: "", time: "" });
+//   const [newItem, setNewItem] = useState({ id: null, day: "", activity: "", time: "" });
 
 //   const handleChange = (e) => {
 //     setNewItem({ ...newItem, [e.target.name]: e.target.value });
@@ -15,40 +15,67 @@
 
 //   const handleAddItem = () => {
 //     if (newItem.day && newItem.activity && newItem.time) {
-//       setItinerary([...itinerary, { ...newItem, id: Date.now() }]);
-//       setNewItem({ day: "", activity: "", time: "" });
+//       if (newItem.id) {
+//         setItinerary(itinerary.map((item) => (item.id === newItem.id ? newItem : item)));
+//       } else {
+//         setItinerary([...itinerary, { ...newItem, id: Date.now() }]);
+//       }
+//       setNewItem({ id: null, day: "", activity: "", time: "" });
 //     }
 //   };
 
+ 
 //   const handleRemoveItem = (id) => {
-//     setItinerary(itinerary.filter((item) => item.id !== id));
+//     const isConfirmed = window.confirm("Are you sure you want to remove this item?");
+//     if (isConfirmed) {
+//       setItinerary(itinerary.filter((item) => item.id !== id));
+//     }
+//   };
+  
+
+//   const handleUpdateItem = (id) => {
+//     const itemToUpdate = itinerary.find((item) => item.id === id);
+//     if (itemToUpdate) {
+//       setNewItem({ ...itemToUpdate });
+//     }
 //   };
 
-//   const handleUpdateItem = (id, updatedItem) => {
-//     setItinerary(
-//       itinerary.map((item) => (item.id === id ? { ...item, ...updatedItem } : item))
-//     );
+//   const handleKeyDown = (e) => {
+//     if (e.key === "Enter") {
+//       handleAddItem();
+//     }
 //   };
+
+//   useEffect(() => {
+//     // Sort itinerary by date and time when it changes
+//     setItinerary([...itinerary].sort((a, b) => {
+//       const dateComparison = new Date(a.day) - new Date(b.day);
+//       if (dateComparison !== 0) {
+//         return dateComparison;
+//       }
+//       return a.time.localeCompare(b.time);
+//     }));
+//   }, [itinerary]);
 
 //   return (
 //     <div className="container mx-auto mt-20 py-8">
 //       <h1 className="text-3xl font-bold mb-4 text-center">Your Itinerary</h1>
 //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 //         {itinerary.map((item) => (
-//           <div key={item.id} className="border rounded p-4 bg-gray-100">
+//           <div key={item.id} className="cards border rounded bg-gray-300 shadow-x  p-4 ">
 //             <h2 className="text-xl font-semibold mb-2">{item.day}</h2>
 //             <p className="text-gray-600">Activity: {item.activity}</p>
 //             <p className="text-gray-600">Time: {item.time}</p>
 //             <div className="flex justify-end mt-2">
 //               <button
 //                 onClick={() => handleRemoveItem(item.id)}
-//                 className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded mr-2"
+//                 className="bg-[#dc6a60] hover:bg-red-600 text-white py-1 px-2 rounded mr-2"
 //               >
 //                 Remove
 //               </button>
 //               <button
-//                 onClick={() => handleUpdateItem(item.id, { day: "Thursday" })}
-//                 className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded"
+//                 onClick={() => handleUpdateItem(item.id)}
+//                 className="bg-[#3d91bb] hover:bg-cyan-700 text-white py-1 px-2 rounded"
 //               >
 //                 Update
 //               </button>
@@ -60,11 +87,12 @@
 //         <h2 className="text-xl font-bold mb-2">Add New Item</h2>
 //         <div className="flex flex-col sm:flex-row">
 //           <input
-//             type="text"
+//             type="date"
 //             name="day"
 //             placeholder="Day"
 //             value={newItem.day}
 //             onChange={handleChange}
+//             onKeyDown={handleKeyDown}
 //             className="border border-gray-300 rounded mr-2 mb-2 sm:mb-0 sm:w-1/3 px-4 py-2"
 //           />
 //           <input
@@ -73,14 +101,16 @@
 //             placeholder="Activity"
 //             value={newItem.activity}
 //             onChange={handleChange}
+//             onKeyDown={handleKeyDown}
 //             className="border border-gray-300 rounded mr-2 mb-2 sm:mb-0 sm:w-1/3 px-4 py-2"
 //           />
 //           <input
-//             type="text"
+//             type="time"
 //             name="time"
 //             placeholder="Time"
 //             value={newItem.time}
 //             onChange={handleChange}
+//             onKeyDown={handleKeyDown}
 //             className="border border-gray-300 rounded mr-2 mb-2 sm:mb-0 sm:w-1/3 px-4 py-2"
 //           />
 //           <button
@@ -96,7 +126,6 @@
 // };
 
 // export default Itinerary;
-
 import React, { useState, useEffect } from "react";
 
 const Itinerary = () => {
@@ -108,29 +137,37 @@ const Itinerary = () => {
 
   const [newItem, setNewItem] = useState({ id: null, day: "", activity: "", time: "" });
 
+  useEffect(() => {
+    // Retrieve itinerary data from local storage on component mount
+    const storedItinerary = JSON.parse(localStorage.getItem("itinerary")) || [];
+    setItinerary(storedItinerary);
+  }, []);
+
   const handleChange = (e) => {
     setNewItem({ ...newItem, [e.target.name]: e.target.value });
   };
 
   const handleAddItem = () => {
     if (newItem.day && newItem.activity && newItem.time) {
-      if (newItem.id) {
-        setItinerary(itinerary.map((item) => (item.id === newItem.id ? newItem : item)));
-      } else {
-        setItinerary([...itinerary, { ...newItem, id: Date.now() }]);
-      }
+      const updatedItinerary = newItem.id
+        ? itinerary.map((item) => (item.id === newItem.id ? newItem : item))
+        : [...itinerary, { ...newItem, id: Date.now() }];
+      setItinerary(updatedItinerary);
+      // Store updated itinerary data in local storage
+      localStorage.setItem("itinerary", JSON.stringify(updatedItinerary));
       setNewItem({ id: null, day: "", activity: "", time: "" });
     }
   };
 
- 
   const handleRemoveItem = (id) => {
     const isConfirmed = window.confirm("Are you sure you want to remove this item?");
     if (isConfirmed) {
-      setItinerary(itinerary.filter((item) => item.id !== id));
+      const updatedItinerary = itinerary.filter((item) => item.id !== id);
+      setItinerary(updatedItinerary);
+      // Store updated itinerary data in local storage
+      localStorage.setItem("itinerary", JSON.stringify(updatedItinerary));
     }
   };
-  
 
   const handleUpdateItem = (id) => {
     const itemToUpdate = itinerary.find((item) => item.id === id);
@@ -144,17 +181,6 @@ const Itinerary = () => {
       handleAddItem();
     }
   };
-
-  useEffect(() => {
-    // Sort itinerary by date and time when it changes
-    setItinerary([...itinerary].sort((a, b) => {
-      const dateComparison = new Date(a.day) - new Date(b.day);
-      if (dateComparison !== 0) {
-        return dateComparison;
-      }
-      return a.time.localeCompare(b.time);
-    }));
-  }, [itinerary]);
 
   return (
     <div className="container mx-auto mt-20 py-8">
@@ -191,7 +217,6 @@ const Itinerary = () => {
             placeholder="Day"
             value={newItem.day}
             onChange={handleChange}
-            onKeyDown={handleKeyDown}
             className="border border-gray-300 rounded mr-2 mb-2 sm:mb-0 sm:w-1/3 px-4 py-2"
           />
           <input
@@ -200,7 +225,6 @@ const Itinerary = () => {
             placeholder="Activity"
             value={newItem.activity}
             onChange={handleChange}
-            onKeyDown={handleKeyDown}
             className="border border-gray-300 rounded mr-2 mb-2 sm:mb-0 sm:w-1/3 px-4 py-2"
           />
           <input
@@ -209,7 +233,6 @@ const Itinerary = () => {
             placeholder="Time"
             value={newItem.time}
             onChange={handleChange}
-            onKeyDown={handleKeyDown}
             className="border border-gray-300 rounded mr-2 mb-2 sm:mb-0 sm:w-1/3 px-4 py-2"
           />
           <button
@@ -225,4 +248,5 @@ const Itinerary = () => {
 };
 
 export default Itinerary;
+
 

@@ -1,22 +1,24 @@
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid"; // Import UUID for generating unique IDs
+import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const TripPlanner = () => {
-  // Simulated array of trips
+  // Retrieve trip data from local storage on component mount
+  useEffect(() => {
+    const storedTrips = JSON.parse(localStorage.getItem("trips")) || [];
+    setTrips(storedTrips);
+  }, []);
+
   const [trips, setTrips] = useState([]);
 
-  // State for new trip inputs
   const [newTrip, setNewTrip] = useState({
-    id: uuidv4(), // Generate unique ID for new trip
+    id: uuidv4(),
     title: "",
     description: "",
     dateTime: "",
   });
 
-  // State to track the ID of the trip being edited
   const [editingTripId, setEditingTripId] = useState(null);
 
-  // Handle input change for new trip
   const handleNewTripChange = (e) => {
     const { name, value } = e.target;
     setNewTrip({
@@ -25,14 +27,14 @@ const TripPlanner = () => {
     });
   };
 
-  // Handle adding a new trip
   const handleAddTrip = () => {
     if (!newTrip.title || !newTrip.description || !newTrip.dateTime) {
       alert("Please fill out all fields before adding a trip.");
       return;
     }
-    setTrips([...trips, newTrip]);
-    // Clear input fields after adding trip
+    const updatedTrips = [...trips, newTrip];
+    setTrips(updatedTrips);
+    localStorage.setItem("trips", JSON.stringify(updatedTrips));
     setNewTrip({
       id: uuidv4(),
       title: "",
@@ -41,31 +43,28 @@ const TripPlanner = () => {
     });
   };
 
-  // Handle removing a trip
   const handleRemoveTrip = (id) => {
     const isConfirmed = window.confirm("Are you sure you want to remove this item?");
     if (isConfirmed) {
-      setTrips(trips.filter((trip) => trip.id !== id));
-  };
+      const updatedTrips = trips.filter((trip) => trip.id !== id);
+      setTrips(updatedTrips);
+      localStorage.setItem("trips", JSON.stringify(updatedTrips));
     }
-    
+  };
 
-  // Handle editing a trip
   const handleEditTrip = (id) => {
     setEditingTripId(id);
-    // Find the trip with the provided ID and set its details in the input fields
     const tripToEdit = trips.find((trip) => trip.id === id);
     setNewTrip(tripToEdit);
   };
 
-  // Handle saving edited trip
   const handleSaveEditedTrip = () => {
     const updatedTrips = trips.map((trip) =>
       trip.id === newTrip.id ? newTrip : trip
     );
     setTrips(updatedTrips);
-    setEditingTripId(null); // Reset editing trip ID
-    // Clear input fields after saving edited trip
+    localStorage.setItem("trips", JSON.stringify(updatedTrips));
+    setEditingTripId(null);
     setNewTrip({
       id: uuidv4(),
       title: "",

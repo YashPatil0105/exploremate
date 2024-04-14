@@ -56,13 +56,20 @@ const PlaceDetails = ({ place, selected, refProp }) => {
         )}
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" onClick={() => window.open(place.web_url, '_blank')}>
-          Trip Advisor
-        </Button>
-        <Button size="small" color="primary" onClick={() => window.open(place.website, '_blank')}>
-          Website
-        </Button>
-      </CardActions>
+  <Button size="small" color="primary" onClick={() => window.open(place.web_url, '_blank')}>
+    Trip Advisor
+  </Button>
+  {place.website ? (
+    <Button size="small" color="primary" onClick={() => window.open(place.website, '_blank')}>
+      Website
+    </Button>
+  ) : (
+    <Button size="small" disabled>
+      Not Available
+    </Button>
+  )}
+</CardActions>
+
     </Card>
   );
 };

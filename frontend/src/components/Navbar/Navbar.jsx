@@ -181,6 +181,26 @@ export const NavbarLinks = [
     name: "Home",
     link: "/",
   },
+  
+  {
+    name: "Explore",
+    link: "/advisor",
+  },
+  {
+    name: "FlightFare",
+    link: "/flight",
+  },
+  {
+    name: "Itinerary",
+    link: "/itinerary",
+  },
+  {
+    name: "TripSync",
+    link: "/tripplanner",
+  },
+];
+
+const DropdownLinks = [
   {
     name: "About",
     link: "/about",
@@ -193,25 +213,7 @@ export const NavbarLinks = [
     name: "Best Places",
     link: "/best-places",
   },
-];
-
-const DropdownLinks = [
-  {
-    name: "Travel Advisor",
-    link: "/advisor",
-  },
-  {
-    name: "Flight Booking",
-    link: "/flight",
-  },
-  {
-    name: "Itinerary Planning",
-    link: "/itinerary",
-  },
-  {
-    name: "Trip Planning",
-    link: "/tripplanner",
-  },
+  
 ];
 
 const Navbar = ({ handleOrderPopup }) => {
@@ -229,7 +231,11 @@ const Navbar = ({ handleOrderPopup }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    setIsLoggedIn(false);
+    const isConfirmed = window.confirm("Are you sure you want to logout?");
+    if (isConfirmed) {
+      setIsLoggedIn(false);
+    }
+    
     // Redirect to home page after logout
     window.location.href = "/";
   };
