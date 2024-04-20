@@ -83,8 +83,11 @@ import TravelAdvisor from "./pages/TravelAdvisorPage";
 import Header from './components/Header/Header';
 import TravelAdvisorPage from './pages/TravelAdvisorPage'; // Import the new page
 import FlightListPage from './pages/FlightListPage';
+import { useState } from 'react';
 
 const App = () => {
+  const [userdata, setUserdata] = useState(null);
+  
   React.useEffect(() => {
     AOS.init({
       offset: 100,
@@ -94,20 +97,20 @@ const App = () => {
     });
     AOS.refresh();
   }, []);
-
+  
   return (
     <QueryClientProvider client={new QueryClient()}>
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout userdata={userdata} setUserdata={setUserdata} />}>
             <Route index element={<Home />} />
             <Route path="blogs" element={<Blogs />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
             <Route path="/flight" element={<FlightComparison />} />
             <Route path="/itinerary" element={<Itinerary />} />
             <Route path="/flights" element={<FlightListPage />} />
+            <Route path="/login" element={<Login setUserdata={setUserdata} />} />
             <Route path="/tripplanner" element={<TripPlanner />} />
             <Route path="/advisor" element={<TravelAdvisor />} />
             <Route path="blogs/:id" element={<BlogsDetails />} />
