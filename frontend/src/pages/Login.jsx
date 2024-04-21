@@ -100,6 +100,8 @@ const Login = () => {
     try {
       const res = await axios.post('http://localhost:5000/login', user);
       if (res.status === 200 && res.data) {
+        console.log("User ID:", res.data._id);
+        localStorage.setItem("user", JSON.stringify(res.data));
         setUserdata(res.data); // Set the userdata state in the parent component
         toast.success('Logged in successfully');
         navigate('/');
