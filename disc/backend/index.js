@@ -1071,13 +1071,41 @@ app.post("/login", async (req, res) => {
 app.post("/itinerary", async (req, res) => {
   const { userId, day, activity, time } = req.body;
   try {
-    const newItem = await ItineraryItem.create({ userId, day, activity, time });
+    const newItem = await ItineraryItem.create({ author: [userId], day, activity, time });
+    // console.log("added");
     return res.status(201).json(newItem);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
 });
+app.get("/itinerary", async (req, res) => {
+    const userId= req.query.userId;
+    try {
+      // Fetch all itinerary items from the database
+      const itineraryItems = await ItineraryItem.find({ author: userId });
+      // Send the itinerary items as a response
+      res.json(itineraryItems);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  });
+
+// DELETE route to remove an itinerary item
+app.delete("/itinerary/:id", async (req, res) => {
+    const itemId = req.params.id;
+    try {
+      // Find the itinerary item by ID and delete it
+      await ItineraryItem.findByIdAndDelete(itemId);
+      res.status(204).end(); // Respond with 204 (No Content) since the item was successfully deleted
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  });
+  
+  
 
 // Route to update an existing itinerary item
 app.put("/itinerary/:id", async (req, res) => {
@@ -1142,130 +1170,6 @@ app.post("/answer/:id", async (req, res) => {
   }
 });
 
-// general routes
-app.get("/questions", async (req, res) => {
-  try {
-    const questions = await Question.find({})
-      .populate("replies")
-      .populate({
-        path: "replies",
-        populate: {
-          path: "author",
-          model: "DiscussionUser",
-        },
-      })
-      .populate("author")
-      .sort({ createdAt: -1 });
-    return res.status(200).json(questions);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-
-app.post("/upvote/:id", async (req, res) => {
-  const { id: questionId } = req.params;
-  const { userId } = req.body;
-  try {
-    const findQuestion = await Question.findById(questionId);
-    if (findQuestion.upvote.includes(userId)) {
-      return res.status(400).json({ message: "You have already upvoted" });
-    }
-
-    if (findQuestion.downvote.includes(userId)) {
-      const downvote = await findQuestion.updateOne({
-        $pull: { downvote: userId },
-      });
-      return res.status(200).json({ message: "Response updated successfully" });
-    }
-
-    const upvote = await findQuestion.updateOne({
-      $push: { upvote: userId },
-    });
-    return res.status(200).json(upvote);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-
-app.post("/downvote/:id", async (req, res) => {
-  const { id: questionId } = req.params;
-  const { userId } = req.body;
-  try {
-    const findQuestion = await Question.findById(questionId);
-    if (findQuestion.downvote.includes(userId)) {
-      return res.status(400).json({ message: "You have already downvoted" });
-    }
-
-    if (findQuestion.upvote.includes(userId)) {
-      const upvote = await findQuestion.updateOne({
-        $pull: { upvote: userId },
-      });
-      return res.status(200).json({ message: "Response updated successfully" });
-    }
-
-    const downvote = await findQuestion.updateOne({
-      $push: { downvote: userId },
-    });
-    return res.status(200).json(downvote);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-
-app.get("/allusers", async (req, res) => {
-  try {
-    const users = await User.find({});
-    return res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-
-app.get("/my-questions/:id", async (req, res) => {
-  const { id: userId } = req.params;
-  try {
-    const replies = await Question.find({ author: userId })
-      .populate("replies")
-      .populate({
-        path: "replies",
-        populate: {
-          path: "author",
-          model: "DiscussionUser",
-        },
-      })
-      .populate("author")
-      .sort({
-        createdAt: -1,
-      });
-    return res.status(200).json(replies);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-
-app.get("/find/:topic", async (req, res) => {
-  const { topic } = req.params;
-  try {
-    const questions = await Question.find({
-      tags: {
-        $in: [topic],
-      },
-    })
-      .populate("replies")
-      .populate({
-        path: "replies",
-        populate: {
-          path: "author",
-          model: "DiscussionUser",
-        },
-      })
-      .populate("author")
-      .sort({ createdAt: -1 });
-    return res.status(200).json(questions);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
 
 const deleteUser = async () => {
   try {
