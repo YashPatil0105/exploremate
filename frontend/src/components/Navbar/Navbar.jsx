@@ -159,7 +159,7 @@
 
 import React, { useState, useEffect } from "react";
 import Logo from "../../assets/logo.png";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Navigate, useNavigate } from "react-router-dom";
 import { FaCaretDown } from "react-icons/fa";
 import ResponsiveMenu from "./ResponsiveMenu";
 import { HiMenuAlt3, HiMenuAlt1 } from "react-icons/hi";
@@ -204,21 +204,36 @@ const DropdownLinks = [
 ];
 
 
+
+
+
 const Navbar = ({ userdata, setUserdata, handleOrderPopup }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedOut, setLoggedOut] = useState(false);
+
+  const navigate=useNavigate();
+
+  // localStorage.setItem("user", JSON.stringify(res.data));
 
   useEffect(() => {
-    setIsLoggedIn(!!userdata);
+    setIsLoggedIn(!userdata);
   }, [userdata]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
+  const handleDropdownLinkClick=(link)=>{
+    navigate(link);
+    setShowMenu(false);
+  }
+
   const handleLogout = () => {
+    localStorage.removeItem("user");
     setUserdata(null);
     setIsLoggedIn(false);
+    setLoggedOut(true);
     // Redirect to home page after logout
     window.location.href = "/";
   };
@@ -258,6 +273,7 @@ const Navbar = ({ userdata, setUserdata, handleOrderPopup }) => {
                           <a
                             className="inline-block w-full rounded-md p-2 hover:bg-primary/20"
                             href={data.link}
+                            onClick={()=>handleDropdownLinkClick(data.link)}
                           >
                             {data.name}
                           </a>
@@ -271,7 +287,7 @@ const Navbar = ({ userdata, setUserdata, handleOrderPopup }) => {
             </div>
             <div className="flex items-center gap-4">
               <button className="bg-gradient-to-r from-primary to-secondary hover:bg-bg-gradient-to-r hover:from-secondary hover:bg-primary transition-all duration-600 text-white px-3 py-1 rounded-full">
-                {userdata ?(
+                {userdata && !loggedOut ?(
                   <button onClick={handleLogout}>Logout</button>
                 ) : (
                   

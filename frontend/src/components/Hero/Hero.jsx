@@ -161,7 +161,7 @@ const Hero = () => {
         trip_type: "2",
         outbound_date: departureDate,
       };
-
+      console.log(data);
       const response = await axios.post(
         `http://127.0.0.1:5000/flight-details`,
         data,
