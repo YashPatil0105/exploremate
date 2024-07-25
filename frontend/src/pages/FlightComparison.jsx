@@ -471,7 +471,7 @@ const FlightComparison = () => {
       };
 
       const response = await axios.post(
-        `http://127.0.0.1:5000/flights`,
+        `https://exploremate-pythoncode.onrender.com/flights`,
         data,
         {
           headers: {

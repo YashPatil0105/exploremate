@@ -163,7 +163,7 @@ const Hero = () => {
       };
       console.log(data);
       const response = await axios.post(
-        `http://127.0.0.1:5000/flight-details`,
+        `https://exploremate-pythoncode.onrender.com/flight-details`,
         data,
         {
           headers: {
@@ -343,10 +343,7 @@ const Hero = () => {
                   <span className="font-semibold">Duration (minutes):</span>{" "}
                   {flight["Duration (minutes)"]}
                 </p>
-                <p>
-                  <span className="font-semibold">Price (USD):</span>{" "}
-                  {flight["Price (USD)"]}
-                </p>
+
               </div>
             ))}
           </>
