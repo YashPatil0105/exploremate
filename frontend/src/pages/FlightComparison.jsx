@@ -505,13 +505,13 @@ const FlightComparison = () => {
     setDepartureCity(arrivalCity);
     setArrivalCity(tempDepartureCity);
   };
-  return (
-    <div className="container mx-auto mt-20 py-8">
+return (
+    <div className="container mx-auto mt-20 py-8 px-4 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold mb-4 text-center">
         <FaPlane className="inline-block mr-2 animate-bounce" />
         Flight Price Comparison
       </h1>
-      <div className="flex flex-col md:flex-row items-center mb-4 ml-80">
+      <div className="flex flex-col md:flex-row items-center justify-center mb-4">
         <select
           value={departureCity}
           onChange={(e) => setDepartureCity(e.target.value)}
@@ -545,7 +545,7 @@ const FlightComparison = () => {
         />
         <motion.button
           onClick={handleSearch}
-          className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors duration-300"
+          className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors duration-300 w-full md:w-auto"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -575,6 +575,5 @@ const FlightComparison = () => {
     </div>
   );
 };
-
 
 export default FlightComparison;
