@@ -182,10 +182,10 @@ export const NavbarLinks = [
     name: "Itinerary",
     link: "/itinerary",
   },
-  {
-    name: "TripSync",
-    link: "/tripplanner",
-  },
+  // {
+  //   name: "TripSync",
+  //   link: "/tripplanner",
+  // },
 ];
 
 const DropdownLinks = [
