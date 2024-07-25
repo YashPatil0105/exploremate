@@ -6,9 +6,12 @@ import Reply from "./model/reply.js";
 import ItineraryItem from "./model/ItineraryItem.js";
 import cors from "cors";
 import { Server } from "socket.io";
+import bcrypt from 'bcrypt';
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+// const bcrypt = require('bcrypt');
 
 const Airport = [
   {
@@ -1041,30 +1044,39 @@ app.post("/signup", async (req, res) => {
   const { name, password, email, profileImage } = req.body;
   console.log("req.body", req.body);
   try {
-    const findUser = await User.findOne({ name });
-    if (findUser) {
-      return res.status(400).json({ message: "Username already exists" });
-    }
-    const newUser = await User.create({ name, password, email, profileImage });
-    return res.status(201).json({ message: "User created successfully" });
+      const findUser = await User.findOne({ name });
+      if (findUser) {
+          return res.status(400).json({ message: "Username already exists" });
+      }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Create the new user with the hashed password
+      const newUser = await User.create({ name, password: hashedPassword, email, profileImage });
+      return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: "Server Error" });
   }
 });
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const findUser = await User.findOne({ email });
-    if (!findUser) {
-      return res.status(400).json({ message: "User does not exist" });
-    }
-    if (findUser.password === password) {
+      const findUser = await User.findOne({ email });
+      if (!findUser) {
+          return res.status(400).json({ message: "User does not exist" });
+      }
+
+      // Compare the provided password with the stored hashed password
+      const isMatch = await bcrypt.compare(password, findUser.password);
+      if (!isMatch) {
+          return res.status(400).json({ message: "Incorrect password" });
+      }
+
       return res.status(200).json(findUser);
-    }
-    return res.status(400).json({ message: "Incorrect password" });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: "Server Error" });
   }
 });
 
